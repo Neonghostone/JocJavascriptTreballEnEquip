@@ -133,7 +133,7 @@ function checkKeyDown(e)
 			console.log("Pressing left  or arrow ");
 			//coses[0].x = coses[0].x + coses[0].Velocitat;
 			console.log("Lindex de la persona morta es"+ coses.indexOf(CosaSenseRe) ); 
-			//coses[0].saltar(); 
+			coses[0].saltar(); 
 			//coses.splice(PersonaMorta);
         }
     if (e.keyCode == '39' ) //right walk player_x=player_x+5;
@@ -167,7 +167,18 @@ var coses = [];  //[new actor('name1', 20, 180, 1), new actor('name2', 30, 180, 
 			
 let CosaSenseRe = coses.push(new cosa("Soc una cosa", 10, 10, 1, "DesolatedHut.png")); //0
 let PersonaMorta = coses.push(new persona("Soc una cosa", 30, 20, 1, "MaximusDead1.png")); //1
-
+ 
+//Descripcio: aquesta funcio fa apareixer coses 
+function SpawnApareixCosa(ClaseString = "cosa",X = 0, Y = 0)
+{
+	var NewCosa; 
+	
+	NewCosa = coses.push(new cosa("Soc una cosa", 10, 10, 1, "MaximusDead1.png"));
+	
+	
+	return NewCosa; 
+}
+ 
 	
 //Desc: Aqusta funcio savisa tot el temps
 function draw(timestamp) 
@@ -187,7 +198,7 @@ function draw(timestamp)
     
 	
 	
-	
+	SpawnApareixCosa( "cosa", 50, 50 ); 
 	
 	//foreach coses
 
