@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en"> 
+<head>
+<title>Gladiators</title>
+<meta content="text/html; charset=UTF-8" http-equiv="content-type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="title" content="Gladiators">
+<meta name="description" content="Game">
+<button onclick="MoveRight()"> This is a button </button>
+<link rel="icon" type="image/png" href="glario.png"> 
+<link rel="stylesheet" type="text/css" href="style.css"> 
+<link rel="manifest" href="manifest.manifest">
+</head>
+<body onload="">
+<div class="maindiv" id="maindiv">
+<div class="canvasdiv" id="canvasdiv">
+<canvas class="canvas"id="canvas" width="360" height="360">
+Your web browser does not support canvas.
+</canvas>
+
+<button> This is a button for advance right</button>
+<button> This is a button for advance left</button>
+</div>
+</div><!-- maindiv -->
+
+</body>
+<script type="text/javascript">
+
+// IMAGES
+
+
+
+class cosa 
+{
+
+	constructor(name, x, y, team, mainTexture, InternalTexture, ActorHealth, ActorState, Velocitat ) 
+	{
+		this.name = name;
+		this.x = x; 
+		this.y = y;
+		this.team = team; //Team 1 Players/hero  Team 2 Enemies
+		this.mainTexture = mainTexture;//"BloodForWebGladiators1.png"; 
+		this.InternalTexture=new Image();
+		this.InternalTexture.setAttribute("src", this.mainTexture);  
+		this.ActorHealth = 100; 	
+		this.ActorState = "Alive"; //"Alive" is alive, "Dead" is dea
+		this.Velocitat = 1; 
+	} 
+	
+	saltar()
+	{
+		this.y = this.y + ( this.Velocitat * 5 ); 
+	}
+	
+} 
+
+class persona extends cosa
+{
+
+	constructor(name, x, y, team, mainTexture, InternalTexture,ActorHealth,ActorState,Velocitat) 
+	{
+		super(name, x, y, team, mainTexture, InternalTexture,ActorHealth,ActorState, Velocitat); 
+		this.Velocitat = 5; 
+	}
+	
+	saltar()
+	{
+		this.y = this.y + ( this.Velocitat * 5 );
+		this.x = this.x + ( this.Velocitat * 5 ); 
+	}
+	
+}
+
+var wall=new Image();
+
+function BeginPlay() 
+    {
+    window.requestAnimationFrame(draw);	
+       
+    if (document.images) 
+        { 
+        wall.setAttribute("src", "DesolatedHut.png");
+	    }
+    }
+	
+	
+	
+function addLoadEvent(func) 
+    {
+	
+		
+	var oldonload = window.onload;
+	if (typeof window.onload != 'function') 
+        {
+		window.onload = func;
+	    } 
+    else 
+        {
+    	window.onload = function() 
+            {
+			if (oldonload) 
+                {
+				oldonload();
+			    }
+			func();
+		    }
+    	}
+    }
+// PRELOAD IMAGES
+addLoadEvent(BeginPlay);
+//VARS
+let deltaTime = 0;
+let lastTimestamp = 0;
+const perfectFrameTime = 1000 / 60;
+
+
+// CANVAS
+var canvas = document.getElementById('canvas');
+if (canvas.getContext) 
+    {
+    var ctx = canvas.getContext('2d');
+    }
+// KEYBOARD
+
+
+
+document.onkeydown = checkKeyDown;
+function checkKeyDown(e) 
+    {
+ 
+    if (e.keyCode == '37' ) //left walk //player_x=player_x-5; 
+        {  
+			console.log("Pressing left  or arrow ");
+			//coses[0].x = coses[0].x + coses[0].Velocitat;
+			console.log("Lindex de la persona morta es"+ coses.indexOf(CosaSenseRe) ); 
+			coses[0].saltar(); 
+			//coses.splice(PersonaMorta);
+        }
+    if (e.keyCode == '39' ) //right walk player_x=player_x+5;
+        {   
+			console.log("Pressing  right left or arrow ");
+			//coses[1].x = coses[1].x + coses[1].Velocitat;  
+			
+			coses[1].saltar(); 			
+			
+        }
+ 
+    
+    }
+document.onkeyup = checkKeyUp;
+//ON RELASE
+function checkKeyUp(e) 
+    {
+		if (e.keyCode == '37') //left cursor
+        {
+		
+        }
+		if (e.keyCode == '39') //right cursor
+        {   
+ 
+        }
+    }
+	
+
+
+var coses = [];  //[new actor('name1', 20, 180, 1), new actor('name2', 30, 180, 2), new actor('name3', 40, 180, 2)];
+			
+let CosaSenseRe = coses.push(new cosa("Soc una cosa", 10, 10, 1, "DesolatedHut.png")); //0
+let PersonaMorta = coses.push(new persona("Soc una cosa", 30, 20, 1, "MaximusDead1.png")); //1
+ 
+//Descripcio: aquesta funcio fa apareixer coses 
+function SpawnApareixCosa(ClaseString = "cosa",X = 0, Y = 0)
+{
+	var NewCosa; 
+	
+	NewCosa = coses.push(new cosa("Soc una cosa", 10, 10, 1, "MaximusDead1.png"));
+	
+	
+	return NewCosa; 
+}
+ 
+	
+//Desc: Aqusta funcio savisa tot el temps
+function draw(timestamp) 
+{	
+    requestAnimationFrame(draw);
+    deltaTime = (timestamp - lastTimestamp) / perfectFrameTime;
+
+	//console.log("FROM Index.html draw drawing stuff");	
+		
+    //clean canvas screen
+    canvas.width=canvas.width;
+    //screen
+    ctx.beginPath();
+
+    ctx.drawImage(wall,0,0,500,500,0,0,90,90);
+    ctx.drawImage(wall,40,40,500,500,100,100,90,90);
+    
+	
+	
+	SpawnApareixCosa( "cosa", 50, 50 ); 
+	
+	//foreach coses
+
+	
+		coses.forEach(DrawCoses);
+		function DrawCoses(value, index, array) //ITeracio num 0  coses 0 index 0 array TOT ITeracio num 1  coses 1 index 1 array TOT
+		{
+			ctx.drawImage(value.InternalTexture,0,0,128,128,value.x,value.y,128,128);
+			//console.log( value.x+"index is "+index ); 
+			
+			
+        }		
+	
+
+	lastTimestamp = timestamp;	
+} //End draw
+	
+	
+	
+
+
+
+</script>
+
+
+
+</html>
